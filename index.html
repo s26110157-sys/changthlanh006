@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Kawaii Portfolio Portal 🌸</title>
+    <style>
+        /* ==========================================
+           1. 全局設定與可愛馬卡龍配色
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fredoka', 'Quicksand', 'Nunito', 'Microsoft JhengHei', sans-serif;
+        }
+
+        :root {
+            --bg-pink: #ffe5ec;
+            --bg-cream: #fff0f5;
+            --card-white: rgba(255, 255, 255, 0.85);
+            --primary-pink: #ff85a1;
+            --pastel-yellow: #ffda6e;
+            --pastel-blue: #90e0ef;
+            --pastel-green: #b7e4c7;
+            --text-color: #5c4d51;
+            --text-light: #a39396;
+            --shadow-soft: 0 10px 25px rgba(255, 133, 161, 0.15);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe5ec 0%, #f0f3ff 50%, #e8fcc2 100%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================
+           2. 可愛飄浮雲朵與動態背景
+           ========================================== */
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            z-index: 0;
+            pointer-events: none;
+            animation: floatCloud 20s linear infinite;
+        }
+
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
+
+        .cloud-1 {
+            width: 120px;
+            height: 40px;
+            top: 10%;
+            left: -150px;
+            animation-duration: 25s;
+        }
+        .cloud-1::before { width: 50px; height: 50px; top: -20px; left: 20px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -10px; left: 55px; }
+
+        .cloud-2 {
+            width: 160px;
+            height: 50px;
+            top: 65%;
+            left: -200px;
+            animation-duration: 32s;
+            animation-delay: 5s;
+        }
+        .cloud-2::before { width: 70px; height: 70px; top: -30px; left: 25px; }
+        .cloud-2::after { width: 50px; height: 50px; top: -15px; left: 75px; }
+
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 300px)); }
+        }
+
+        /* ==========================================
+           3. 主卡片容器 (圓潤白板質感)
+           ========================================== */
+        .container {
+            width: 100%;
+            max-width: 960px;
+            background: var(--card-white);
+            backdrop-filter: blur(12px);
+            border: 4px solid #ffffff;
+            border-radius: 36px;
+            padding: 3rem 2rem;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ==========================================
+           4. 中央個人大頭貼區域
+           ========================================== */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1.2rem;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(255, 133, 161, 0.3);
+            animation: bounceSoft 3s ease-in-out infinite;
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--pastel-yellow);
+            border: 3px solid #ffffff;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #d48b00;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        .user-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            text-shadow: 2px 2px 0px #ffffff;
+        }
+
+        .sub-title {
+            display: inline-block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #7b2cbf;
+            background: #e0aaff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
+
+        /* ==========================================
+           5. 16 個關卡按鈕 Grid 佈局
+           ========================================== */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+        }
+
+        .btn-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 110px;
+            padding: 1rem 0.8rem;
+            border-radius: 24px;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+        }
+
+        .btn-card .week-tag {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-bottom: 0.4rem;
+        }
+
+        .btn-card .title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        /* --- 🌟 已解鎖按鈕風格 (Unlocked) --- */
+        .btn-card.unlocked {
+            background: #ffffff;
+            border: 3px solid var(--pastel-blue);
+            color: var(--text-color);
+            cursor: pointer;
+        }
+
+        .btn-card.unlocked .week-tag {
+            background: #e0f7fa;
+            color: #00838f;
+        }
+
+        /* Q 彈懸停動畫 (Jelly Bounce) */
+        .btn-card.unlocked:hover {
+            transform: scale(1.08) translateY(-5px);
+            border-color: var(--primary-pink);
+            box-shadow: 0 12px 25px rgba(255, 133, 161, 0.35);
+        }
+
+        .btn-card.unlocked:hover .week-tag {
+            background: var(--primary-pink);
+            color: #ffffff;
+        }
+
+        /* --- 🔒 未解鎖按鈕風格 (Locked) --- */
+        .btn-card.locked {
+            background: #f0f0f0;
+            border: 3px dashed #d6d6d6;
+            color: #b0b0b0;
+            cursor: not-allowed;
+            user-select: none;
+        }
+
+        .btn-card.locked .week-tag {
+            background: #e0e0e0;
+            color: #9e9e9e;
+        }
+
+        .btn-card.locked .lock-emoji {
+            font-size: 1.6rem;
+            margin-bottom: 0.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        /* 未解鎖懸停：可愛左右搖晃 (Shake) */
+        .btn-card.locked:hover {
+            background: #eee6e8;
+            border-color: #ffb3c1;
+            animation: jellyShake 0.5s ease-in-out;
+        }
+
+        .btn-card.locked:hover .lock-emoji {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        @keyframes jellyShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-4deg); }
+            40% { transform: translateX(6px) rotate(4deg); }
+            60% { transform: translateX(-4px) rotate(-2deg); }
+            80% { transform: translateX(4px) rotate(2deg); }
+        }
+
+        /* ==========================================
+           6. RWD 手機版介面優化
+           ========================================== */
+        @media (max-width: 850px) {
+            .grid-menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 580px) {
+            .container {
+                padding: 2rem 1.2rem;
+                border-radius: 28px;
+            }
+
+            .user-name {
+                font-size: 1.8rem;
+            }
+
+            .grid-menu {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.9rem;
+            }
+
+            .btn-card {
+                min-height: 100px;
+                padding: 0.8rem 0.4rem;
+                border-radius: 20px;
+            }
+
+            .btn-card .title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 雲朵動畫背景 -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
+
+    <!-- 主入口卡片 -->
+    <main class="container">
+        
+        <!-- 個人頭像與資訊 -->
+        <header class="profile-section">
+            <div class="avatar-container">
+                <!-- 預設可愛大頭貼假圖 -->
+                <img src="https://i.postimg.cc/tTPvqvM3/IMG-6512.jpg alt="大頭貼" class="avatar-img">
+                <span class="avatar-badge">⭐ LV.1</span>
+            </div>
+            <h1 class="user-name"> 常氏玲🐾</h1>
+            <span class="sub-title">網頁程式設計 // 冒險地圖 🗺️</span>
+        </header>
+
+        <!-- 16 個關卡按鈕區域 -->
+        <nav class="grid-menu">
+            
+            <!-- 按鈕 1：已解鎖 -->
+            <a href="w1/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 1</span>
+                <span class="title">數位名片 🪪</span>
+            </a>
+
+            <!-- 按鈕 2：已解鎖 -->
+            <a href="w2/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 2</span>
+                <span class="title">今天吃甚麼? 🍱</span>
+            </a>
+
+            <!-- 按鈕 3 ~ 16：未解鎖 -->
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 3 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 4 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 5 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 6 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 7 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 8 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 9 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 10 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 11 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 12 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 13 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 14 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 15 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 16 - 未解鎖</span>
+            </div>
+
+        </nav>
+    </main>
+
+</body>
+</html>
