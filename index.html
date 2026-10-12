@@ -1,4 +1,17 @@
 <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pen</title>
+  </head>
+  <body>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -35,7 +48,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             position: relative;
             overflow-x: hidden;
         }
@@ -316,11 +329,10 @@
         <!-- 個人頭像與資訊 -->
         <header class="profile-section">
             <div class="avatar-container">
-                <!-- 預設可愛大頭貼假圖 -->
-                <img src="https://i.postimg.cc/tTPvqvM3/IMG-6512.jpg alt="大頭貼" class="avatar-img">
+                <img src="https://i.postimg.cc/tTPvqvM3/IMG-6512.jpg" alt="大頭貼" class="avatar-img">
                 <span class="avatar-badge">⭐ LV.1</span>
             </div>
-            <h1 class="user-name"> 常氏玲🐾</h1>
+            <h1 class="user-name">常氏玲🐾</h1>
             <span class="sub-title">網頁程式設計 // 冒險地圖 🗺️</span>
         </header>
 
@@ -339,12 +351,13 @@
                 <span class="title">今天吃甚麼? 🍱</span>
             </a>
 
-            <!-- 按鈕 3 ~ 16：未解鎖 -->
-            <div class="btn-card locked">
-                <span class="lock-emoji">🔒</span>
-                <span class="title">Week 3 - 未解鎖</span>
-            </div>
+            <!-- 按鈕 3：已解鎖 -->
+            <a href="w3/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 3</span>
+                <span class="title">迷因產生器 🤡</span>
+            </a>
 
+            <!-- 按鈕 4 ~ 16：未解鎖 -->
             <div class="btn-card locked">
                 <span class="lock-emoji">🔒</span>
                 <span class="title">Week 4 - 未解鎖</span>
