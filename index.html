@@ -3,8 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>夢幻馬卡龍作品集入口 🌸 Macaron Portfolio</title>
+    <title>My Kawaii Portfolio Portal 🌸</title>
     <style>
+        /* ==========================================
+           1. 全局設定與可愛馬卡龍配色
+           ========================================== */
         * {
             margin: 0;
             padding: 0;
@@ -13,155 +16,103 @@
         }
 
         :root {
-            /* 夢幻馬卡龍主題色 */
-            --sakura-pink: #ffb3c6;
-            --deep-sakura: #ff85a1;
-            --milk-yellow: #fff3bf;
-            --accent-yellow: #ffd43b;
-            --pastel-blue: #a5d8ff;
-            --accent-blue: #74c0fc;
-            --mint-green: #b2f2bb;
-            --accent-green: #69db7c;
-            --milk-white: rgba(255, 255, 255, 0.9);
-            
-            --text-dark: #5c4d51;
-            --text-muted: #9e8d92;
-            
-            /* 蓬鬆綿密馬卡龍陰影 */
-            --macaron-shadow: 0 12px 30px rgba(255, 133, 161, 0.22);
-            --card-inset-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8);
+            --bg-pink: #ffe5ec;
+            --bg-cream: #fff0f5;
+            --card-white: rgba(255, 255, 255, 0.85);
+            --primary-pink: #ff85a1;
+            --pastel-yellow: #ffda6e;
+            --pastel-blue: #90e0ef;
+            --pastel-green: #b7e4c7;
+            --text-color: #5c4d51;
+            --text-light: #a39396;
+            --shadow-soft: 0 10px 25px rgba(255, 133, 161, 0.15);
         }
 
         body {
             min-height: 100vh;
-            /* 溫柔粉嫩馬卡龍漸層背景 */
-            background: linear-gradient(135deg, #ffdeeb 0%, #edf2ff 40%, #e6fcf5 80%, #fff9db 100%);
-            color: var(--text-dark);
+            background: linear-gradient(135deg, #ffe5ec 0%, #f0f3ff 50%, #e8fcc2 100%);
+            color: var(--text-color);
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 2.5rem 1rem;
+            padding: 2rem 1rem;
             position: relative;
             overflow-x: hidden;
         }
 
-        /* 1. 漂浮雲朵動畫 */
+        /* ==========================================
+           2. 可愛飄浮雲朵與動態背景
+           ========================================== */
         .cloud {
             position: fixed;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 50px;
             z-index: 0;
             pointer-events: none;
-            filter: drop-shadow(0 8px 15px rgba(255, 182, 193, 0.2));
-            animation: floatCloud 25s linear infinite;
+            animation: floatCloud 20s linear infinite;
         }
 
         .cloud::before, .cloud::after {
             content: '';
             position: absolute;
-            background: rgba(255, 255, 255, 0.75);
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 50%;
         }
 
         .cloud-1 {
-            width: 140px;
-            height: 45px;
-            top: 8%;
-            left: -180px;
-            animation-duration: 28s;
+            width: 120px;
+            height: 40px;
+            top: 10%;
+            left: -150px;
+            animation-duration: 25s;
         }
-        .cloud-1::before { width: 60px; height: 60px; top: -25px; left: 20px; }
-        .cloud-1::after { width: 45px; height: 45px; top: -15px; left: 65px; }
+        .cloud-1::before { width: 50px; height: 50px; top: -20px; left: 20px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -10px; left: 55px; }
 
         .cloud-2 {
-            width: 180px;
-            height: 55px;
-            top: 68%;
-            left: -220px;
-            animation-duration: 35s;
-            animation-delay: 6s;
+            width: 160px;
+            height: 50px;
+            top: 65%;
+            left: -200px;
+            animation-duration: 32s;
+            animation-delay: 5s;
         }
-        .cloud-2::before { width: 80px; height: 80px; top: -35px; left: 30px; }
-        .cloud-2::after { width: 60px; height: 60px; top: -20px; left: 85px; }
+        .cloud-2::before { width: 70px; height: 70px; top: -30px; left: 25px; }
+        .cloud-2::after { width: 50px; height: 50px; top: -15px; left: 75px; }
 
         @keyframes floatCloud {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(100vw + 350px)); }
+            100% { transform: translateX(calc(100vw + 300px)); }
         }
 
-        /* 2. 微光閃爍星星 */
-        .star {
-            position: fixed;
-            background: var(--accent-yellow);
-            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-            z-index: 0;
-            pointer-events: none;
-            animation: twinkle 3s ease-in-out infinite alternate;
-        }
-
-        .star-1 { width: 22px; height: 22px; top: 12%; right: 15%; animation-delay: 0s; }
-        .star-2 { width: 16px; height: 16px; top: 30%; left: 8%; animation-delay: 1.2s; }
-        .star-3 { width: 26px; height: 26px; bottom: 18%; right: 10%; animation-delay: 0.6s; }
-        .star-4 { width: 18px; height: 18px; bottom: 10%; left: 14%; animation-delay: 1.8s; }
-
-        @keyframes twinkle {
-            0% { transform: scale(0.7) rotate(0deg); opacity: 0.3; filter: drop-shadow(0 0 2px var(--accent-yellow)); }
-            100% { transform: scale(1.1) rotate(15deg); opacity: 0.9; filter: drop-shadow(0 0 8px var(--accent-yellow)); }
-        }
-
-        /* 3. 飄落氣泡動畫 */
-        .bubbles-container {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .bubble {
-            position: absolute;
-            bottom: -60px;
-            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 179, 198, 0.4));
-            border-radius: 50%;
-            border: 1.5px solid rgba(255, 255, 255, 0.6);
-            animation: riseBubble 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-
-        .bubble-1 { width: 35px; height: 35px; left: 10%; animation-duration: 11s; animation-delay: 0s; }
-        .bubble-2 { width: 25px; height: 25px; left: 30%; animation-duration: 14s; animation-delay: 3s; }
-        .bubble-3 { width: 45px; height: 45px; left: 60%; animation-duration: 16s; animation-delay: 1s; }
-        .bubble-4 { width: 20px; height: 20px; left: 85%; animation-duration: 10s; animation-delay: 5s; }
-
-        @keyframes riseBubble {
-            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
-            20% { opacity: 0.7; }
-            80% { opacity: 0.7; }
-            100% { transform: translateY(-110vh) scale(1.2) rotate(360deg); opacity: 0; }
-        }
-
+        /* ==========================================
+           3. 主卡片容器 (圓潤白板質感)
+           ========================================== */
         .container {
             width: 100%;
-            max-width: 980px;
-            background: var(--milk-white);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 5px solid #ffffff;
-            border-radius: 36px; /* 圓滾滾大圓角 */
+            max-width: 960px;
+            background: var(--card-white);
+            backdrop-filter: blur(12px);
+            border: 4px solid #ffffff;
+            border-radius: 36px;
             padding: 3rem 2rem;
-            box-shadow: var(--macaron-shadow), var(--card-inset-shadow);
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.8);
             position: relative;
             z-index: 1;
         }
 
+        /* ==========================================
+           4. 中央個人大頭貼區域
+           ========================================== */
         .profile-section {
             text-align: center;
-            margin-bottom: 2.8rem;
+            margin-bottom: 2.5rem;
         }
 
         .avatar-container {
             position: relative;
-            width: 135px;
-            height: 135px;
+            width: 130px;
+            height: 130px;
             margin: 0 auto 1.2rem;
         }
 
@@ -170,58 +121,56 @@
             height: 100%;
             border-radius: 50%;
             object-fit: cover;
-            /* 櫻花粉/牛奶黃雙色漸層邊框 */
-            border: 6px solid #ffffff;
-            background: linear-gradient(135deg, var(--sakura-pink), var(--milk-yellow));
-            box-shadow: 0 10px 22px rgba(255, 133, 161, 0.35);
-            animation: bounceSoft 3.5s ease-in-out infinite;
-        }
-
-        /* 溫柔浮動動畫 */
-        @keyframes bounceSoft {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-10px) rotate(2deg); }
+            border: 5px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(255, 133, 161, 0.3);
+            animation: bounceSoft 3s ease-in-out infinite;
         }
 
         .avatar-badge {
             position: absolute;
-            bottom: -2px;
-            right: -2px;
-            background: linear-gradient(45deg, var(--milk-yellow), var(--accent-yellow));
+            bottom: 0;
+            right: 0;
+            background: var(--pastel-yellow);
             border: 3px solid #ffffff;
             border-radius: 20px;
-            padding: 0.3rem 0.8rem;
-            font-size: 0.82rem;
-            font-weight: 800;
-            color: #8c5b00;
-            box-shadow: 0 4px 12px rgba(255, 212, 59, 0.4);
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #d48b00;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
         }
 
         .user-name {
-            font-size: 2.3rem;
+            font-size: 2.2rem;
             font-weight: 800;
-            color: var(--deep-sakura);
+            color: var(--primary-pink);
             letter-spacing: 1px;
-            margin-bottom: 0.5rem;
-            text-shadow: 2px 2px 0px #ffffff, 4px 4px 10px rgba(255, 133, 161, 0.2);
+            margin-bottom: 0.4rem;
+            text-shadow: 2px 2px 0px #ffffff;
         }
 
         .sub-title {
             display: inline-block;
             font-size: 0.95rem;
-            font-weight: 800;
-            color: #4c6ef5;
-            background: linear-gradient(135deg, #dbe4ff 0%, #edf2ff 100%);
-            border: 2px solid #bac8ff;
-            padding: 0.35rem 1.2rem;
-            border-radius: 25px;
-            box-shadow: 0 4px 10px rgba(116, 192, 252, 0.2);
+            font-weight: 700;
+            color: #7b2cbf;
+            background: #e0aaff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
         }
 
+        /* ==========================================
+           5. 16 個關卡按鈕 Grid 佈局
+           ========================================== */
         .grid-menu {
             display: grid;
-            grid-template-columns: repeat(4, 1fr); /* 電腦版 4 列 */
-            gap: 1.25rem;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
         }
 
         .btn-card {
@@ -229,142 +178,124 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            min-height: 115px;
-            padding: 1.1rem 0.8rem;
-            border-radius: 28px; /* 馬卡龍圓滾角 */
+            min-height: 110px;
+            padding: 1rem 0.8rem;
+            border-radius: 24px;
             text-decoration: none;
             position: relative;
-            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             text-align: center;
-            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
-            border: 3.5px solid #ffffff;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
         }
 
         .btn-card .week-tag {
             font-size: 0.8rem;
             font-weight: 800;
             text-transform: uppercase;
-            padding: 0.25rem 0.7rem;
-            border-radius: 14px;
-            margin-bottom: 0.45rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-bottom: 0.4rem;
         }
 
         .btn-card .title {
             font-size: 0.95rem;
             font-weight: 700;
-            line-height: 1.35;
+            line-height: 1.3;
         }
 
-        /* --- 🌸 已解鎖按鈕 (Unlocked - 馬卡龍亮色) --- */
-        .btn-card.unlocked-1 {
-            background: linear-gradient(135deg, #ffffff 40%, #e6fcf5 100%);
-            border-color: var(--mint-green);
-            color: var(--text-dark);
-        }
-        .btn-card.unlocked-1 .week-tag {
-            background: var(--mint-green);
-            color: #2b8a3e;
+        /* --- 🌟 已解鎖按鈕風格 (Unlocked) --- */
+        .btn-card.unlocked {
+            background: #ffffff;
+            border: 3px solid var(--pastel-blue);
+            color: var(--text-color);
+            cursor: pointer;
         }
 
-        .btn-card.unlocked-2 {
-            background: linear-gradient(135deg, #ffffff 40%, #fff9db 100%);
-            border-color: var(--milk-yellow);
-            color: var(--text-dark);
-        }
-        .btn-card.unlocked-2 .week-tag {
-            background: var(--accent-yellow);
-            color: #a67c00;
+        .btn-card.unlocked .week-tag {
+            background: #e0f7fa;
+            color: #00838f;
         }
 
-        /* Jelly Bounce 果凍 Q 彈 Hover 動畫 */
+        /* Q 彈懸停動畫 (Jelly Bounce) */
         .btn-card.unlocked:hover {
-            transform: scale(1.08) translateY(-6px);
-            border-color: var(--deep-sakura);
-            /* 馬卡龍亮色漸層光暈 */
-            box-shadow: 0 15px 30px rgba(255, 133, 161, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.9);
-            animation: jellyBounce 0.6s ease-in-out;
+            transform: scale(1.08) translateY(-5px);
+            border-color: var(--primary-pink);
+            box-shadow: 0 12px 25px rgba(255, 133, 161, 0.35);
         }
 
         .btn-card.unlocked:hover .week-tag {
-            background: var(--deep-sakura);
+            background: var(--primary-pink);
             color: #ffffff;
-            box-shadow: 0 3px 8px rgba(255, 133, 161, 0.3);
         }
 
-        @keyframes jellyBounce {
-            0% { transform: scale(1) translateY(0); }
-            30% { transform: scale(1.12, 0.9) translateY(-8px); }
-            50% { transform: scale(0.95, 1.05) translateY(-6px); }
-            70% { transform: scale(1.05, 0.98) translateY(-6px); }
-            100% { transform: scale(1.08) translateY(-6px); }
-        }
-
-        /* --- 🔒 未解鎖按鈕 (Locked - 灰色馬卡龍質感 Soft Muted) --- */
+        /* --- 🔒 未解鎖按鈕風格 (Locked) --- */
         .btn-card.locked {
-            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
-            border-color: #e9ecef;
-            color: var(--text-muted);
+            background: #f0f0f0;
+            border: 3px dashed #d6d6d6;
+            color: #b0b0b0;
             cursor: not-allowed;
             user-select: none;
-            opacity: 0.88;
         }
 
         .btn-card.locked .week-tag {
-            background: #e9ecef;
-            color: #adb5bd;
+            background: #e0e0e0;
+            color: #9e9e9e;
         }
 
         .btn-card.locked .lock-emoji {
             font-size: 1.6rem;
-            margin-bottom: 0.25rem;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+            margin-bottom: 0.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
         }
 
-        /* Jelly Shake 未解鎖左右軟彈搖晃懸停動畫 */
+        /* 未解鎖懸停：可愛左右搖晃 (Shake) */
         .btn-card.locked:hover {
-            background: linear-gradient(135deg, #fff0f3 0%, #f8f9fa 100%);
-            border-color: var(--sakura-pink);
+            background: #eee6e8;
+            border-color: #ffb3c1;
             animation: jellyShake 0.5s ease-in-out;
         }
 
         .btn-card.locked:hover .lock-emoji {
-            transform: scale(1.25) rotate(-12deg);
+            transform: scale(1.2) rotate(-10deg);
         }
 
         @keyframes jellyShake {
-            0%, 100% { transform: translateX(0) rotate(0deg); }
-            20% { transform: translateX(-7px) rotate(-4deg); }
-            40% { transform: translateX(7px) rotate(4deg); }
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-4deg); }
+            40% { transform: translateX(6px) rotate(4deg); }
             60% { transform: translateX(-4px) rotate(-2deg); }
             80% { transform: translateX(4px) rotate(2deg); }
         }
 
-        @media (max-width: 880px) {
+        /* ==========================================
+           6. RWD 手機版介面優化
+           ========================================== */
+        @media (max-width: 850px) {
             .grid-menu {
                 grid-template-columns: repeat(3, 1fr);
             }
         }
 
-        @media (max-width: 600px) {
+        @media (max-width: 580px) {
             .container {
-                padding: 2.2rem 1.2rem;
-                border-radius: 30px;
+                padding: 2rem 1.2rem;
+                border-radius: 28px;
             }
 
             .user-name {
-                font-size: 1.85rem;
+                font-size: 1.8rem;
             }
 
             .grid-menu {
-                grid-template-columns: repeat(2, 1fr); /* 手機版 2 列 */
+                grid-template-columns: repeat(2, 1fr);
                 gap: 0.9rem;
             }
 
             .btn-card {
-                min-height: 102px;
-                padding: 0.85rem 0.5rem;
-                border-radius: 22px;
+                min-height: 100px;
+                padding: 0.8rem 0.4rem;
+                border-radius: 20px;
             }
 
             .btn-card .title {
@@ -375,59 +306,45 @@
 </head>
 <body>
 
-    <!-- 1. 漂浮雲朵 -->
+    <!-- 雲朵動畫背景 -->
     <div class="cloud cloud-1"></div>
     <div class="cloud cloud-2"></div>
 
-    <!-- 2. 微光閃爍星星 -->
-    <div class="star star-1"></div>
-    <div class="star star-2"></div>
-    <div class="star star-3"></div>
-    <div class="star star-4"></div>
-
-    <!-- 3. 飄落氣泡 -->
-    <div class="bubbles-container">
-        <div class="bubble bubble-1"></div>
-        <div class="bubble bubble-2"></div>
-        <div class="bubble bubble-3"></div>
-        <div class="bubble bubble-4"></div>
-    </div>
-
-    <!-- 馬卡龍主卡片 -->
+    <!-- 主入口卡片 -->
     <main class="container">
         
-        <!-- 中央個人檔案區域 -->
+        <!-- 個人頭像與資訊 -->
         <header class="profile-section">
             <div class="avatar-container">
-                <!-- 預設頭像假圖 -->
-                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="大頭貼" class="avatar-img">
-                <span class="avatar-badge">🌸 LVL.1</span>
+                <img src="https://i.postimg.cc/tTPvqvM3/IMG-6512.jpg" alt="大頭貼" class="avatar-img">
+                <span class="avatar-badge">⭐ LV.1</span>
             </div>
-            <h1 class="user-name">Your Name 🌸</h1>
-            <span class="sub-title">LVL.1 網頁冒險家 🐾</span>
+            <h1 class="user-name">常氏玲🐾</h1>
+            <span class="sub-title">網頁程式設計 // 冒險地圖 🗺️</span>
         </header>
 
-        <!-- 16 個關卡地圖按鈕 -->
+        <!-- 16 個關卡按鈕區域 -->
         <nav class="grid-menu">
             
-            <!-- 按鈕 1 (已解鎖) -->
-            <a href="w1/index.html" class="btn-card unlocked unlocked-1">
+            <!-- 按鈕 1：已解鎖 -->
+            <a href="w1/index.html" class="btn-card unlocked">
                 <span class="week-tag">Week 1</span>
                 <span class="title">數位名片 🪪</span>
             </a>
 
-            <!-- 按鈕 2 (已解鎖) -->
-            <a href="w2/index.html" class="btn-card unlocked unlocked-2">
+            <!-- 按鈕 2：已解鎖 -->
+            <a href="w2/index.html" class="btn-card unlocked">
                 <span class="week-tag">Week 2</span>
                 <span class="title">今天吃甚麼? 🍱</span>
             </a>
 
-            <!-- 按鈕 3 ~ 16 (未解鎖) -->
-            <div class="btn-card locked">
-                <span class="lock-emoji">🔒</span>
-                <span class="title">Week 3 - 未解鎖</span>
-            </div>
+            <!-- 按鈕 3：已解鎖 -->
+            <a href="w3/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 3</span>
+                <span class="title">迷因產生器 🤡</span>
+            </a>
 
+            <!-- 按鈕 4 ~ 16：未解鎖 -->
             <div class="btn-card locked">
                 <span class="lock-emoji">🔒</span>
                 <span class="title">Week 4 - 未解鎖</span>
