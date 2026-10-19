@@ -1,452 +1,500 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>🌸 可愛粉色泡泡迷因產生器 🌸</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>夢幻馬卡龍作品集入口 🌸 Macaron Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fredoka', 'Quicksand', 'Nunito', 'Microsoft JhengHei', sans-serif;
+        }
 
-  <!-- 引入 Tailwind CSS 工具庫（快速建構響應式排版） -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- 引入 Google Fonts: Fredoka (標題可愛字體) & Noto Sans TC (中文內文字體) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
-  
-  <!-- 引入 Font Awesome 圖示庫 -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        :root {
+            /* 夢幻馬卡龍主題色 */
+            --sakura-pink: #ffb3c6;
+            --deep-sakura: #ff85a1;
+            --milk-yellow: #fff3bf;
+            --accent-yellow: #ffd43b;
+            --pastel-blue: #a5d8ff;
+            --accent-blue: #74c0fc;
+            --mint-green: #b2f2bb;
+            --accent-green: #69db7c;
+            --milk-white: rgba(255, 255, 255, 0.9);
+            
+            --text-dark: #5c4d51;
+            --text-muted: #9e8d92;
+            
+            /* 蓬鬆綿密馬卡龍陰影 */
+            --macaron-shadow: 0 12px 30px rgba(255, 133, 161, 0.22);
+            --card-inset-shadow: inset 0 0 15px rgba(255, 255, 255, 0.8);
+        }
 
-  <!-- 引入 html2canvas 程式庫：用於將 HTML 區塊轉為圖片下載 -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+        body {
+            min-height: 100vh;
+            /* 溫柔粉嫩馬卡龍漸層背景 */
+            background: linear-gradient(135deg, #ffdeeb 0%, #edf2ff 40%, #e6fcf5 80%, #fff9db 100%);
+            color: var(--text-dark);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2.5rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-  <style>
-    /* 全域字體設定 */
-    body {
-      font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
-      background: linear-gradient(135deg, #ffd1dc 0%, #ffe4e1 50%, #f0fff0 100%);
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
+        /* 1. 漂浮雲朵動畫 */
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 50px;
+            z-index: 0;
+            pointer-events: none;
+            filter: drop-shadow(0 8px 15px rgba(255, 182, 193, 0.2));
+            animation: floatCloud 25s linear infinite;
+        }
 
-    /* 可愛泡泡背景動畫效果 */
-    .bubble-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      overflow: hidden;
-      pointer-events: none;
-    }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.75);
+            border-radius: 50%;
+        }
 
-    .bubble {
-      position: absolute;
-      bottom: -100px;
-      background: rgba(255, 182, 193, 0.4);
-      border-radius: 50%;
-      box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6);
-      animation: floatUp 12s infinite ease-in-out;
-    }
+        .cloud-1 {
+            width: 140px;
+            height: 45px;
+            top: 8%;
+            left: -180px;
+            animation-duration: 28s;
+        }
+        .cloud-1::before { width: 60px; height: 60px; top: -25px; left: 20px; }
+        .cloud-1::after { width: 45px; height: 45px; top: -15px; left: 65px; }
 
-    @keyframes floatUp {
-      0% {
-        transform: translateY(0) scale(0.8);
-        opacity: 0;
-      }
-      20% {
-        opacity: 0.7;
-      }
-      100% {
-        transform: translateY(-120vh) scale(1.2);
-        opacity: 0;
-      }
-    }
+        .cloud-2 {
+            width: 180px;
+            height: 55px;
+            top: 68%;
+            left: -220px;
+            animation-duration: 35s;
+            animation-delay: 6s;
+        }
+        .cloud-2::before { width: 80px; height: 80px; top: -35px; left: 30px; }
+        .cloud-2::after { width: 60px; height: 60px; top: -20px; left: 85px; }
 
-    /* 粉色玻璃擬態卡片容器 */
-    .glass-card {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(10px);
-      border: 3px solid rgba(255, 192, 203, 0.6);
-      box-shadow: 0 10px 25px rgba(255, 182, 193, 0.3);
-    }
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 350px)); }
+        }
 
-    /* 可愛粉色按鈕懸停點擊效果 */
-    .bubble-btn {
-      background: linear-gradient(135deg, #ff8da1 0%, #ff6b8b 100%);
-      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-      box-shadow: 0 6px 15px rgba(255, 107, 139, 0.4);
-    }
-    .bubble-btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 8px 20px rgba(255, 107, 139, 0.6);
-    }
-    .bubble-btn:active {
-      transform: translateY(1px) scale(0.98);
-    }
+        /* 2. 微光閃爍星星 */
+        .star {
+            position: fixed;
+            background: var(--accent-yellow);
+            clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+            z-index: 0;
+            pointer-events: none;
+            animation: twinkle 3s ease-in-out infinite alternate;
+        }
 
-    /* 自訂可愛風格控制項（滑桿 Range Slider） */
-    input[type=range] {
-      -webkit-appearance: none;
-      width: 100%;
-      background: #ffd6e0;
-      height: 10px;
-      border-radius: 10px;
-      outline: none;
-    }
-    input[type=range]::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: #ff5e7e;
-      cursor: pointer;
-      box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
-      border: 2px solid white;
-      transition: transform 0.15s ease;
-    }
-    input[type=range]::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
+        .star-1 { width: 22px; height: 22px; top: 12%; right: 15%; animation-delay: 0s; }
+        .star-2 { width: 16px; height: 16px; top: 30%; left: 8%; animation-delay: 1.2s; }
+        .star-3 { width: 26px; height: 26px; bottom: 18%; right: 10%; animation-delay: 0.6s; }
+        .star-4 { width: 18px; height: 18px; bottom: 10%; left: 14%; animation-delay: 1.8s; }
 
-    /* 迷因文字效果：預設黑色重重輪廓描邊，確保在任何底圖上都看得到 */
-    .meme-text {
-      font-family: 'Fredoka', 'Noto Sans TC', sans-serif;
-      font-weight: 900;
-      text-transform: uppercase;
-      word-break: break-word;
-      line-height: 1.2;
-      /* 重度黑陰影/描邊：上下左右多重陰影確保粗黑邊框 */
-      text-shadow: 
-        2px 2px 0 #000, -2px -2px 0 #000,
-        2px -2px 0 #000, -2px 2px 0 #000,
-        0px 3px 0 #000, 0px -3px 0 #000,
-        3px 0px 0 #000, -3px 0px 0 #000,
-        2px 3px 5px rgba(0,0,0,0.8);
-      user-select: none;
-    }
-  </style>
+        @keyframes twinkle {
+            0% { transform: scale(0.7) rotate(0deg); opacity: 0.3; filter: drop-shadow(0 0 2px var(--accent-yellow)); }
+            100% { transform: scale(1.1) rotate(15deg); opacity: 0.9; filter: drop-shadow(0 0 8px var(--accent-yellow)); }
+        }
+
+        /* 3. 飄落氣泡動畫 */
+        .bubbles-container {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -60px;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.9), rgba(255, 179, 198, 0.4));
+            border-radius: 50%;
+            border: 1.5px solid rgba(255, 255, 255, 0.6);
+            animation: riseBubble 12s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+        }
+
+        .bubble-1 { width: 35px; height: 35px; left: 10%; animation-duration: 11s; animation-delay: 0s; }
+        .bubble-2 { width: 25px; height: 25px; left: 30%; animation-duration: 14s; animation-delay: 3s; }
+        .bubble-3 { width: 45px; height: 45px; left: 60%; animation-duration: 16s; animation-delay: 1s; }
+        .bubble-4 { width: 20px; height: 20px; left: 85%; animation-duration: 10s; animation-delay: 5s; }
+
+        @keyframes riseBubble {
+            0% { transform: translateY(0) scale(0.8) rotate(0deg); opacity: 0; }
+            20% { opacity: 0.7; }
+            80% { opacity: 0.7; }
+            100% { transform: translateY(-110vh) scale(1.2) rotate(360deg); opacity: 0; }
+        }
+
+        .container {
+            width: 100%;
+            max-width: 980px;
+            background: var(--milk-white);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 5px solid #ffffff;
+            border-radius: 36px; /* 圓滾滾大圓角 */
+            padding: 3rem 2rem;
+            box-shadow: var(--macaron-shadow), var(--card-inset-shadow);
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2.8rem;
+        }
+
+        .avatar-container {
+            position: relative;
+            width: 135px;
+            height: 135px;
+            margin: 0 auto 1.2rem;
+        }
+
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            /* 櫻花粉/牛奶黃雙色漸層邊框 */
+            border: 6px solid #ffffff;
+            background: linear-gradient(135deg, var(--sakura-pink), var(--milk-yellow));
+            box-shadow: 0 10px 22px rgba(255, 133, 161, 0.35);
+            animation: bounceSoft 3.5s ease-in-out infinite;
+        }
+
+        /* 溫柔浮動動畫 */
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .avatar-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            background: linear-gradient(45deg, var(--milk-yellow), var(--accent-yellow));
+            border: 3px solid #ffffff;
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: #8c5b00;
+            box-shadow: 0 4px 12px rgba(255, 212, 59, 0.4);
+        }
+
+        .user-name {
+            font-size: 2.3rem;
+            font-weight: 800;
+            color: var(--deep-sakura);
+            letter-spacing: 1px;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 0px #ffffff, 4px 4px 10px rgba(255, 133, 161, 0.2);
+        }
+
+        .sub-title {
+            display: inline-block;
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: #4c6ef5;
+            background: linear-gradient(135deg, #dbe4ff 0%, #edf2ff 100%);
+            border: 2px solid #bac8ff;
+            padding: 0.35rem 1.2rem;
+            border-radius: 25px;
+            box-shadow: 0 4px 10px rgba(116, 192, 252, 0.2);
+        }
+
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 電腦版 4 列 */
+            gap: 1.25rem;
+        }
+
+        .btn-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 115px;
+            padding: 1.1rem 0.8rem;
+            border-radius: 28px; /* 馬卡龍圓滾角 */
+            text-decoration: none;
+            position: relative;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.03);
+            border: 3.5px solid #ffffff;
+        }
+
+        .btn-card .week-tag {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 14px;
+            margin-bottom: 0.45rem;
+        }
+
+        .btn-card .title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        /* --- 🌸 已解鎖按鈕 (Unlocked - 馬卡龍亮色) --- */
+        .btn-card.unlocked-1 {
+            background: linear-gradient(135deg, #ffffff 40%, #e6fcf5 100%);
+            border-color: var(--mint-green);
+            color: var(--text-dark);
+        }
+        .btn-card.unlocked-1 .week-tag {
+            background: var(--mint-green);
+            color: #2b8a3e;
+        }
+
+        .btn-card.unlocked-2 {
+            background: linear-gradient(135deg, #ffffff 40%, #fff9db 100%);
+            border-color: var(--milk-yellow);
+            color: var(--text-dark);
+        }
+        .btn-card.unlocked-2 .week-tag {
+            background: var(--accent-yellow);
+            color: #a67c00;
+        }
+
+        /* Jelly Bounce 果凍 Q 彈 Hover 動畫 */
+        .btn-card.unlocked:hover {
+            transform: scale(1.08) translateY(-6px);
+            border-color: var(--deep-sakura);
+            /* 馬卡龍亮色漸層光暈 */
+            box-shadow: 0 15px 30px rgba(255, 133, 161, 0.4), inset 0 0 12px rgba(255, 255, 255, 0.9);
+            animation: jellyBounce 0.6s ease-in-out;
+        }
+
+        .btn-card.unlocked:hover .week-tag {
+            background: var(--deep-sakura);
+            color: #ffffff;
+            box-shadow: 0 3px 8px rgba(255, 133, 161, 0.3);
+        }
+
+        @keyframes jellyBounce {
+            0% { transform: scale(1) translateY(0); }
+            30% { transform: scale(1.12, 0.9) translateY(-8px); }
+            50% { transform: scale(0.95, 1.05) translateY(-6px); }
+            70% { transform: scale(1.05, 0.98) translateY(-6px); }
+            100% { transform: scale(1.08) translateY(-6px); }
+        }
+
+        /* --- 🔒 未解鎖按鈕 (Locked - 灰色馬卡龍質感 Soft Muted) --- */
+        .btn-card.locked {
+            background: linear-gradient(135deg, #f8f9fa 0%, #f1f3f5 100%);
+            border-color: #e9ecef;
+            color: var(--text-muted);
+            cursor: not-allowed;
+            user-select: none;
+            opacity: 0.88;
+        }
+
+        .btn-card.locked .week-tag {
+            background: #e9ecef;
+            color: #adb5bd;
+        }
+
+        .btn-card.locked .lock-emoji {
+            font-size: 1.6rem;
+            margin-bottom: 0.25rem;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.08));
+        }
+
+        /* Jelly Shake 未解鎖左右軟彈搖晃懸停動畫 */
+        .btn-card.locked:hover {
+            background: linear-gradient(135deg, #fff0f3 0%, #f8f9fa 100%);
+            border-color: var(--sakura-pink);
+            animation: jellyShake 0.5s ease-in-out;
+        }
+
+        .btn-card.locked:hover .lock-emoji {
+            transform: scale(1.25) rotate(-12deg);
+        }
+
+        @keyframes jellyShake {
+            0%, 100% { transform: translateX(0) rotate(0deg); }
+            20% { transform: translateX(-7px) rotate(-4deg); }
+            40% { transform: translateX(7px) rotate(4deg); }
+            60% { transform: translateX(-4px) rotate(-2deg); }
+            80% { transform: translateX(4px) rotate(2deg); }
+        }
+
+        @media (max-width: 880px) {
+            .grid-menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 2.2rem 1.2rem;
+                border-radius: 30px;
+            }
+
+            .user-name {
+                font-size: 1.85rem;
+            }
+
+            .grid-menu {
+                grid-template-columns: repeat(2, 1fr); /* 手機版 2 列 */
+                gap: 0.9rem;
+            }
+
+            .btn-card {
+                min-height: 102px;
+                padding: 0.85rem 0.5rem;
+                border-radius: 22px;
+            }
+
+            .btn-card .title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
-<body class="p-3 sm:p-6 text-gray-800">
+<body>
 
-  <!-- 背景動態粉色泡泡 -->
-  <div class="bubble-bg" id="bubbleContainer"></div>
+    <!-- 1. 漂浮雲朵 -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
 
-  <!-- 主頁面容器 (響應式：手機版上下排列，電腦版左右雙欄) -->
-  <div class="max-w-6xl mx-auto">
-    
-    <header class="text-center my-4 sm:my-6">
-      <h1 class="text-3xl sm:text-5xl font-extrabold text-pink-600 drop-shadow-md tracking-wider flex items-center justify-center gap-2">
-        <span>🫧</span>
-        <span>粉色泡泡迷因產生器</span>
-        <span>🫧</span>
-      </h1>
-      <p class="text-pink-500 font-medium text-sm sm:text-base mt-2">
-        上傳你的圖片，製作專屬於你的可愛或爆笑迷因吧！✨
-      </p>
-    </header>
+    <!-- 2. 微光閃爍星星 -->
+    <div class="star star-1"></div>
+    <div class="star star-2"></div>
+    <div class="star star-3"></div>
+    <div class="star star-4"></div>
 
-    <!-- 主要內容區塊：左側面板 + 右側預覽 -->
-    <main class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+    <!-- 3. 飄落氣泡 -->
+    <div class="bubbles-container">
+        <div class="bubble bubble-1"></div>
+        <div class="bubble bubble-2"></div>
+        <div class="bubble bubble-3"></div>
+        <div class="bubble bubble-4"></div>
+    </div>
 
-      <section class="lg:col-span-5 glass-card p-5 sm:p-6 rounded-3xl space-y-5">
+    <!-- 馬卡龍主卡片 -->
+    <main class="container">
         
-        <!-- 區塊標題 -->
-        <h2 class="text-xl font-bold text-pink-600 border-b-2 border-pink-200 pb-2 flex items-center gap-2">
-          <i class="fa-solid fa-sliders"></i> 控制面板
-        </h2>
-
-        <!-- 1. 圖片上傳區塊 -->
-        <div class="space-y-2">
-          <label class="block text-sm font-bold text-gray-700">
-            <i class="fa-solid fa-image text-pink-500 mr-1"></i> 上傳圖片底圖
-          </label>
-          <!-- 檔案選擇按鈕 (預防 CORS，使用 FileReader 讀取本機檔案) -->
-          <label class="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-pink-300 rounded-2xl cursor-pointer bg-pink-50 hover:bg-pink-100 transition-all text-center p-3">
-            <i class="fa-solid fa-cloud-arrow-up text-3xl text-pink-400 mb-1"></i>
-            <span class="text-xs sm:text-sm font-semibold text-pink-600">點擊上傳或拖放圖片到這裡</span>
-            <span class="text-xs text-pink-400 mt-1">支援 PNG, JPG, GIF 格式</span>
-            <input type="file" id="imageInput" accept="image/*" class="hidden" />
-          </label>
-        </div>
-
-        <!-- 2. 上方與下方文字輸入欄位 -->
-        <div class="space-y-4">
-          <div>
-            <label for="topTextInput" class="block text-sm font-bold text-gray-700 mb-1">
-              <i class="fa-solid fa-heading text-pink-500 mr-1"></i> 上方文字 (Top Text)
-            </label>
-            <input 
-              type="text" 
-              id="topTextInput" 
-              placeholder="輸入上方文字..." 
-              value="當你在寫程式碼" 
-              class="w-full px-4 py-2.5 rounded-xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none bg-white/80 transition"
-            />
-          </div>
-
-          <div>
-            <label for="bottomTextInput" class="block text-sm font-bold text-gray-700 mb-1">
-              <i class="fa-solid fa-font text-pink-500 mr-1"></i> 下方文字 (Bottom Text)
-            </label>
-            <input 
-              type="text" 
-              id="bottomTextInput" 
-              placeholder="輸入下方文字..." 
-              value="結果一次就順利執行！" 
-              class="w-full px-4 py-2.5 rounded-xl border-2 border-pink-200 focus:border-pink-400 focus:outline-none bg-white/80 transition"
-            />
-          </div>
-        </div>
-
-        <div class="space-y-4 bg-pink-50/70 p-4 rounded-2xl border border-pink-100">
-          
-          <!-- 字體大小控制 -->
-          <div>
-            <div class="flex justify-between text-sm font-bold text-gray-700 mb-1">
-              <span><i class="fa-solid fa-text-height text-pink-500 mr-1"></i> 字體大小</span>
-              <span id="fontSizeValue" class="text-pink-600 font-extrabold">36px</span>
+        <!-- 中央個人檔案區域 -->
+        <header class="profile-section">
+            <div class="avatar-container">
+                <!-- 預設頭像假圖 -->
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=300&q=80" alt="大頭貼" class="avatar-img">
+                <span class="avatar-badge">🌸 LVL.1</span>
             </div>
-            <input type="range" id="fontSizeSlider" min="16" max="72" value="36" />
-          </div>
+            <h1 class="user-name">Your Name 🌸</h1>
+            <span class="sub-title">LVL.1 網頁冒險家 🐾</span>
+        </header>
 
-          <!-- 上方文字垂直位置 offset -->
-          <div>
-            <div class="flex justify-between text-sm font-bold text-gray-700 mb-1">
-              <span><i class="fa-solid fa-arrows-up-down text-pink-500 mr-1"></i> 上方文字垂直位置</span>
-              <span id="topPosValue" class="text-pink-600 font-extrabold">5%</span>
+        <!-- 16 個關卡地圖按鈕 -->
+        <nav class="grid-menu">
+            
+            <!-- 按鈕 1 (已解鎖) -->
+            <a href="w1/index.html" class="btn-card unlocked unlocked-1">
+                <span class="week-tag">Week 1</span>
+                <span class="title">數位名片 🪪</span>
+            </a>
+
+            <!-- 按鈕 2 (已解鎖) -->
+            <a href="w2/index.html" class="btn-card unlocked unlocked-2">
+                <span class="week-tag">Week 2</span>
+                <span class="title">今天吃甚麼? 🍱</span>
+            </a>
+
+            <!-- 按鈕 3 ~ 16 (未解鎖) -->
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 3 - 未解鎖</span>
             </div>
-            <input type="range" id="topPosSlider" min="0" max="40" value="5" />
-          </div>
 
-          <!-- 下方文字垂直位置 offset -->
-          <div>
-            <div class="flex justify-between text-sm font-bold text-gray-700 mb-1">
-              <span><i class="fa-solid fa-arrows-up-down text-pink-500 mr-1"></i> 下方文字垂直位置</span>
-              <span id="bottomPosValue" class="text-pink-600 font-extrabold">5%</span>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 4 - 未解鎖</span>
             </div>
-            <input type="range" id="bottomPosSlider" min="0" max="40" value="5" />
-          </div>
 
-          <!-- 文字顏色選擇器 -->
-          <div class="flex items-center justify-between pt-1">
-            <label for="textColorPicker" class="text-sm font-bold text-gray-700">
-              <i class="fa-solid fa-palette text-pink-500 mr-1"></i> 文字顏色
-            </label>
-            <div class="flex items-center gap-2">
-              <input type="color" id="textColorPicker" value="#ffffff" class="w-8 h-8 rounded-full border-2 border-white shadow cursor-pointer" />
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 5 - 未解鎖</span>
             </div>
-          </div>
-        </div>
 
-        <!-- 3. 下載按鈕區塊 -->
-        <button 
-          id="downloadBtn" 
-          class="bubble-btn w-full py-3.5 px-6 rounded-2xl text-white font-extrabold text-lg flex items-center justify-center gap-2 shadow-lg"
-        >
-          <i class="fa-solid fa-download"></i> 一鍵下載迷因 (.png)
-        </button>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 6 - 未解鎖</span>
+            </div>
 
-      </section>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 7 - 未解鎖</span>
+            </div>
 
-      <section class="lg:col-span-7 glass-card p-4 sm:p-6 rounded-3xl flex flex-col items-center">
-        
-        <h2 class="text-xl font-bold text-pink-600 border-b-2 border-pink-200 pb-2 w-full mb-4 flex items-center gap-2">
-          <i class="fa-solid fa-eye"></i> 即時預覽區
-        </h2>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 8 - 未解鎖</span>
+            </div>
 
-        <!-- 迷因圖片與文字容器（將會被 html2canvas 擷取） -->
-        <div 
-          id="memeContainer" 
-          class="relative w-full max-w-lg bg-gray-100 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center border-4 border-white"
-          style="min-height: 320px;"
-        >
-          <!-- 底圖 (預設占位圖，上傳後更新) -->
-          <img 
-            id="memeImage" 
-            src="https://placehold.co/600x600/ffb6c1/ffffff?text=Upload+Your+Image!" 
-            alt="迷因底圖" 
-            class="w-full h-auto object-contain block"
-          />
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 9 - 未解鎖</span>
+            </div>
 
-          <!-- 上方文字圖層 -->
-          <div 
-            id="topTextDisplay" 
-            class="meme-text absolute left-0 right-0 px-4 text-center text-white pointer-events-none"
-            style="top: 5%; font-size: 36px;"
-          >
-            當你在寫程式碼
-          </div>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 10 - 未解鎖</span>
+            </div>
 
-          <!-- 下方文字圖層 -->
-          <div 
-            id="bottomTextDisplay" 
-            class="meme-text absolute left-0 right-0 px-4 text-center text-white pointer-events-none"
-            style="bottom: 5%; font-size: 36px;"
-          >
-            結果一次就順利執行！
-          </div>
-        </div>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 11 - 未解鎖</span>
+            </div>
 
-        <p class="text-xs text-pink-400 mt-3 flex items-center gap-1">
-          <i class="fa-solid fa-circle-info"></i> 調整左側數值可即時於畫面上呈現效果
-        </p>
-      </section>
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 12 - 未解鎖</span>
+            </div>
 
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 13 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 14 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 15 - 未解鎖</span>
+            </div>
+
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 16 - 未解鎖</span>
+            </div>
+
+        </nav>
     </main>
 
-    <!-- 頁尾聲明 -->
-    <footer class="text-center text-pink-400 text-xs py-6 mt-6">
-      <p>✨ Cute Pink Meme Generator &copy; 2026 ✨</p>
-    </footer>
-  </div>
-
-  <script>
-    // ===== 1. DOM 元素選取 =====
-    // 取得頁面中需要操作的 HTML 標籤元素
-    const imageInput = document.getElementById('imageInput');
-    const memeImage = document.getElementById('memeImage');
-    
-    const topTextInput = document.getElementById('topTextInput');
-    const bottomTextInput = document.getElementById('bottomTextInput');
-    const topTextDisplay = document.getElementById('topTextDisplay');
-    const bottomTextDisplay = document.getElementById('bottomTextDisplay');
-
-    const fontSizeSlider = document.getElementById('fontSizeSlider');
-    const fontSizeValue = document.getElementById('fontSizeValue');
-    
-    const topPosSlider = document.getElementById('topPosSlider');
-    const topPosValue = document.getElementById('topPosValue');
-    
-    const bottomPosSlider = document.getElementById('bottomPosSlider');
-    const bottomPosValue = document.getElementById('bottomPosValue');
-
-    const textColorPicker = document.getElementById('textColorPicker');
-    
-    const memeContainer = document.getElementById('memeContainer');
-    const downloadBtn = document.getElementById('downloadBtn');
-
-    // ===== 2. 背景可愛泡泡生成器 =====
-    function createBubbles() {
-      const container = document.getElementById('bubbleContainer');
-      const bubbleCount = 15; // 生成泡泡數量
-
-      for (let i = 0; i < bubbleCount; i++) {
-        const bubble = document.createElement('div');
-        bubble.classList.add('bubble');
-        
-        // 隨機設置泡泡的大小、位置與動畫延遲時間
-        const size = Math.random() * 40 + 20; // 20px ~ 60px
-        const left = Math.random() * 100; // 0% ~ 100%
-        const delay = Math.random() * 8; // 0s ~ 8s
-        const duration = Math.random() * 8 + 8; // 8s ~ 16s
-
-        bubble.style.width = `${size}px`;
-        bubble.style.height = `${size}px`;
-        bubble.style.left = `${left}%`;
-        bubble.style.animationDelay = `${delay}s`;
-        bubble.style.animationDuration = `${duration}s`;
-
-        container.appendChild(bubble);
-      }
-    }
-
-    // ===== 3. 本機圖片上傳邏輯 (使用 FileReader 避開 CORS) =====
-    imageInput.addEventListener('change', function (e) {
-      const file = e.target.files[0];
-      if (file) {
-        // 使用 HTML5 FileReader API 來讀取本機圖檔
-        const reader = new FileReader();
-        
-        reader.onload = function (event) {
-          // 當圖片讀取完畢，將 Data URL 設為 <img> 的 src
-          memeImage.src = event.target.result;
-        };
-
-        reader.readAsDataURL(file); // 將檔案轉為 Base64 Data URL 格式
-      }
-    });
-
-    // ===== 4. 即時同步文字輸入 =====
-    // 監聽「上方文字」輸入事件
-    topTextInput.addEventListener('input', function () {
-      topTextDisplay.textContent = this.value || '';
-    });
-
-    // 監聽「下方文字」輸入事件
-    bottomTextInput.addEventListener('input', function () {
-      bottomTextDisplay.textContent = this.value || '';
-    });
-
-    // ===== 5. 滑桿控制與樣式同步 =====
-    // A. 字體大小控制
-    fontSizeSlider.addEventListener('input', function () {
-      const size = `${this.value}px`;
-      fontSizeValue.textContent = size;
-      topTextDisplay.style.fontSize = size;
-      bottomTextDisplay.style.fontSize = size;
-    });
-
-    // B. 上方文字垂直位置控制 (Top Offset)
-    topPosSlider.addEventListener('input', function () {
-      const pos = `${this.value}%`;
-      topPosValue.textContent = pos;
-      topTextDisplay.style.top = pos;
-    });
-
-    // C. 下方文字垂直位置控制 (Bottom Offset)
-    bottomPosSlider.addEventListener('input', function () {
-      const pos = `${this.value}%`;
-      bottomPosValue.textContent = pos;
-      bottomTextDisplay.style.bottom = pos;
-    });
-
-    // D. 文字顏色切換
-    textColorPicker.addEventListener('input', function () {
-      topTextDisplay.style.color = this.value;
-      bottomTextDisplay.style.color = this.value;
-    });
-
-    // ===== 6. 一鍵下載迷因圖檔 (html2canvas) =====
-    downloadBtn.addEventListener('click', function () {
-      // 更改按鈕狀態為處理中
-      const originalBtnHTML = downloadBtn.innerHTML;
-      downloadBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> 正在生成圖片中...`;
-      downloadBtn.disabled = true;
-
-      // 使用 html2canvas 將 #memeContainer 區塊轉為 canvas
-      html2canvas(memeContainer, {
-        useCORS: true, // 支援跨域圖片繪製
-        scale: 2, // 提高輸出解析度 (清晰度 2x)
-        backgroundColor: null // 保持背景透明或符合原始設定
-      }).then(canvas => {
-        // 將 canvas 轉為 PNG Data URL
-        const imageURL = canvas.toDataURL('image/png');
-
-        // 建立虛擬的 <a> 標籤觸發下載
-        const link = document.createElement('a');
-        link.href = imageURL;
-        link.download = 'my-meme.png'; // 下載檔案名稱
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-
-        // 恢復按鈕狀態
-        downloadBtn.innerHTML = originalBtnHTML;
-        downloadBtn.disabled = false;
-      }).catch(err => {
-        console.error('下載失敗：', err);
-        alert('生成圖片時發生錯誤，請稍後再試！');
-        downloadBtn.innerHTML = originalBtnHTML;
-        downloadBtn.disabled = false;
-      });
-    });
-
-    // ===== 7. 頁面初始啟動 =====
-    window.onload = function () {
-      createBubbles(); // 產生動態粉色背景泡泡
-    };
-  </script>
 </body>
 </html>
