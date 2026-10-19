@@ -1,419 +1,418 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>朋友對我的動態留言板 - 可愛泡泡風</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Kawaii Portfolio Portal 🌸</title>
+    <style>
+        /* ==========================================
+           1. 全局設定與可愛馬卡龍配色
+           ========================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Fredoka', 'Quicksand', 'Nunito', 'Microsoft JhengHei', sans-serif;
+        }
 
-  <style>
-    /* =========================================================
-       1. 全局與主題變數設定 (方便修改顏色與風格)
-       ========================================================= */
-    :root {
-      /* 🎨 主題顏色設定 */
-      --bg-gradient: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); /* 網頁背景漸層色 */
-      --card-bg: rgba(255, 255, 255, 0.85);                           /* 卡片背景 (半透明白) */
-      --card-border: #ffd1dc;                                         /* 卡片預設邊框色 (柔粉) */
-      --text-main: #5a5a5a;                                            /* 主要文字顏色 */
-      --text-name: #ff6b81;                                            /* 名字顏色 (可愛粉紅) */
-      --text-time: #a0a0a0;                                            /* 時間文字顏色 */
-      
-      /* ✨ 焦點/ Highlight 特效顏色 */
-      --highlight-border: #ff4757;                                    /* 高亮時的邊框顏色 */
-      --highlight-shadow: 0 15px 35px rgba(2ff, 71, 87, 0.45);        /* 高亮時的發光陰影 */
-      
-      /* 📐 圓角與字型 */
-      --border-radius: 24px;                                           /* 泡泡風格圓角 */
-      --font-family: 'Fredoka', 'Quicksand', "Microsoft JhengHei", sans-serif;
-    }
+        :root {
+            --bg-pink: #ffe5ec;
+            --bg-cream: #fff0f5;
+            --card-white: rgba(255, 255, 255, 0.85);
+            --primary-pink: #ff85a1;
+            --pastel-yellow: #ffda6e;
+            --pastel-blue: #90e0ef;
+            --pastel-green: #b7e4c7;
+            --text-color: #5c4d51;
+            --text-light: #a39396;
+            --shadow-soft: 0 10px 25px rgba(255, 133, 161, 0.15);
+        }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ffe5ec 0%, #f0f3ff 50%, #e8fcc2 100%);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
 
-    body {
-      font-family: var(--font-family);
-      background: var(--bg-gradient);
-      min-height: 100vh;
-      padding: 40px 20px;
-      color: var(--text-main);
-      position: relative;
-      overflow-x: hidden;
-    }
+        /* ==========================================
+           2. 可愛飄浮雲朵與動態背景
+           ========================================== */
+        .cloud {
+            position: fixed;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50px;
+            z-index: 0;
+            pointer-events: none;
+            animation: floatCloud 20s linear infinite;
+        }
 
-    /* 背景飄浮泡泡裝飾 */
-    .bg-bubbles {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-    }
+        .cloud::before, .cloud::after {
+            content: '';
+            position: absolute;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+        }
 
-    .bubble {
-      position: absolute;
-      background: rgba(255, 255, 255, 0.4);
-      border-radius: 50%;
-      animation: float 8s infinite ease-in-out;
-    }
+        .cloud-1 {
+            width: 120px;
+            height: 40px;
+            top: 10%;
+            left: -150px;
+            animation-duration: 25s;
+        }
+        .cloud-1::before { width: 50px; height: 50px; top: -20px; left: 20px; }
+        .cloud-1::after { width: 40px; height: 40px; top: -10px; left: 55px; }
 
-    @keyframes float {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-30px) scale(1.05); }
-    }
+        .cloud-2 {
+            width: 160px;
+            height: 50px;
+            top: 65%;
+            left: -200px;
+            animation-duration: 32s;
+            animation-delay: 5s;
+        }
+        .cloud-2::before { width: 70px; height: 70px; top: -30px; left: 25px; }
+        .cloud-2::after { width: 50px; height: 50px; top: -15px; left: 75px; }
 
-    /* 頁面標題 */
-    header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
+        @keyframes floatCloud {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(100vw + 300px)); }
+        }
 
-    header h1 {
-      font-size: 2.5rem;
-      color: #ff4757;
-      text-shadow: 2px 2px 0px #fff, 4px 4px 10px rgba(255, 105, 180, 0.3);
-      letter-spacing: 2px;
-    }
+        /* ==========================================
+           3. 主卡片容器 (圓潤白板質感)
+           ========================================== */
+        .container {
+            width: 100%;
+            max-width: 960px;
+            background: var(--card-white);
+            backdrop-filter: blur(12px);
+            border: 4px solid #ffffff;
+            border-radius: 36px;
+            padding: 3rem 2rem;
+            box-shadow: 0 15px 35px rgba(255, 182, 193, 0.3), inset 0 0 15px rgba(255, 255, 255, 0.8);
+            position: relative;
+            z-index: 1;
+        }
 
-    /* =========================================================
-       2. 載入中動畫 (Loading Animation)
-       ========================================================= */
-    #loading-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 0;
-    }
+        /* ==========================================
+           4. 中央個人大頭貼區域
+           ========================================== */
+        .profile-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
 
-    .loading-bubble {
-      width: 80px;
-      height: 80px;
-      background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-      box-shadow: 0 10px 20px rgba(255, 154, 158, 0.5);
-      animation: bounce 1.2s infinite ease-in-out alternate;
-    }
+        .avatar-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            margin: 0 auto 1.2rem;
+        }
 
-    .loading-text {
-      margin-top: 20px;
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: #ff6b81;
-      letter-spacing: 1px;
-    }
+        .avatar-img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #ffffff;
+            box-shadow: 0 8px 20px rgba(255, 133, 161, 0.3);
+            animation: bounceSoft 3s ease-in-out infinite;
+        }
 
-    @keyframes bounce {
-      0% { transform: translateY(0) scale(1); }
-      100% { transform: translateY(-25px) scale(1.1); }
-    }
+        .avatar-badge {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background: var(--pastel-yellow);
+            border: 3px solid #ffffff;
+            border-radius: 20px;
+            padding: 0.2rem 0.6rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: #d48b00;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
 
-    /* =========================================================
-       3. 瀑布流排版 (Masonry Layout)
-       ========================================================= */
-    .masonry-wall {
-      column-count: 3;        /* 預設 3 欄 */
-      column-gap: 25px;       /* 欄位間距 */
-      width: 100%;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+        @keyframes bounceSoft {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
 
-    /* 響應式欄位調整 */
-    @media (max-width: 900px) {
-      .masonry-wall { column-count: 2; }
-    }
-    @media (max-width: 600px) {
-      .masonry-wall { column-count: 1; }
-    }
+        .user-name {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--primary-pink);
+            letter-spacing: 1px;
+            margin-bottom: 0.4rem;
+            text-shadow: 2px 2px 0px #ffffff;
+        }
 
-    /* =========================================================
-       4. 卡片樣式與動態輪播特效 (Highlight Effects)
-       ========================================================= */
-    .card {
-      break-inside: avoid;    /* 防止卡片被跨欄截斷 */
-      background: var(--card-bg);
-      border: 3px solid var(--card-border);
-      border-radius: var(--border-radius);
-      padding: 22px;
-      margin-bottom: 25px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-      backdrop-filter: blur(5px);
-      
-      /* 動畫平滑過渡設定 */
-      transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
-                  border-color 0.5s ease,
-                  box-shadow 0.5s ease,
-                  filter 0.5s ease,
-                  opacity 0.5s ease;
-      cursor: pointer;
-    }
+        .sub-title {
+            display: inline-block;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: #7b2cbf;
+            background: #e0aaff;
+            padding: 0.3rem 1rem;
+            border-radius: 20px;
+        }
 
-    .card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-      border-bottom: 2px dashed #ffeaa7;
-      padding-bottom: 8px;
-    }
+        /* ==========================================
+           5. 16 個關卡按鈕 Grid 佈局
+           ========================================== */
+        .grid-menu {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.2rem;
+        }
 
-    .card-name {
-      font-size: 1.2rem;
-      font-weight: bold;
-      color: var(--text-name);
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
+        .btn-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 110px;
+            padding: 1rem 0.8rem;
+            border-radius: 24px;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
+            box-shadow: 0 6px 15px rgba(0,0,0,0.04);
+        }
 
-    .card-time {
-      font-size: 0.8rem;
-      color: var(--text-time);
-    }
+        .btn-card .week-tag {
+            font-size: 0.8rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-bottom: 0.4rem;
+        }
 
-    .card-content {
-      font-size: 1rem;
-      line-height: 1.6;
-      word-break: break-word;
-      white-space: pre-wrap; /* 保留換行符號 */
-    }
+        .btn-card .title {
+            font-size: 0.95rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
 
-    /* ✨ 輪播高亮 (Highlight) 狀態 */
-    .card.highlight {
-      transform: scale(1.08) translateY(-8px);               /* 放大並稍微往上浮 */
-      border-color: var(--highlight-border);                  /* 邊框變色 */
-      box-shadow: var(--highlight-shadow);                   /* 強烈粉紅發光陰影 */
-      background: #ffffff;                                    /* 變純白突出卡片 */
-      z-index: 10;
-      opacity: 1 !important;
-      filter: blur(0px) !important;                          /* 確保清晰 */
-    }
+        /* --- 🌟 已解鎖按鈕風格 (Unlocked) --- */
+        .btn-card.unlocked {
+            background: #ffffff;
+            border: 3px solid var(--pastel-blue);
+            color: var(--text-color);
+            cursor: pointer;
+        }
 
-    /* 🌙 未被選中卡片暗化狀態 (Dimmed) */
-    .masonry-wall.has-highlight .card:not(.highlight) {
-      opacity: 0.6;                                          /* 變半透明 */
-      filter: blur(1.5px);                                  /* 稍微模糊 */
-      transform: scale(0.97);                                /* 稍微微縮放 */
-    }
+        .btn-card.unlocked .week-tag {
+            background: #e0f7fa;
+            color: #00838f;
+        }
 
-    .hidden {
-      display: none !important;
-    }
-  </style>
+        /* Q 彈懸停動畫 (Jelly Bounce) */
+        .btn-card.unlocked:hover {
+            transform: scale(1.08) translateY(-5px);
+            border-color: var(--primary-pink);
+            box-shadow: 0 12px 25px rgba(255, 133, 161, 0.35);
+        }
+
+        .btn-card.unlocked:hover .week-tag {
+            background: var(--primary-pink);
+            color: #ffffff;
+        }
+
+        /* --- 🔒 未解鎖按鈕風格 (Locked) --- */
+        .btn-card.locked {
+            background: #f0f0f0;
+            border: 3px dashed #d6d6d6;
+            color: #b0b0b0;
+            cursor: not-allowed;
+            user-select: none;
+        }
+
+        .btn-card.locked .week-tag {
+            background: #e0e0e0;
+            color: #9e9e9e;
+        }
+
+        .btn-card.locked .lock-emoji {
+            font-size: 1.6rem;
+            margin-bottom: 0.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            transition: transform 0.3s ease;
+        }
+
+        /* 未解鎖懸停：可愛左右搖晃 (Shake) */
+        .btn-card.locked:hover {
+            background: #eee6e8;
+            border-color: #ffb3c1;
+            animation: jellyShake 0.5s ease-in-out;
+        }
+
+        .btn-card.locked:hover .lock-emoji {
+            transform: scale(1.2) rotate(-10deg);
+        }
+
+        @keyframes jellyShake {
+            0%, 100% { transform: translateX(0); }
+            20% { transform: translateX(-6px) rotate(-4deg); }
+            40% { transform: translateX(6px) rotate(4deg); }
+            60% { transform: translateX(-4px) rotate(-2deg); }
+            80% { transform: translateX(4px) rotate(2deg); }
+        }
+
+        /* ==========================================
+           6. RWD 手機版介面優化
+           ========================================== */
+        @media (max-width: 850px) {
+            .grid-menu {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 580px) {
+            .container {
+                padding: 2rem 1.2rem;
+                border-radius: 28px;
+            }
+
+            .user-name {
+                font-size: 1.8rem;
+            }
+
+            .grid-menu {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.9rem;
+            }
+
+            .btn-card {
+                min-height: 100px;
+                padding: 0.8rem 0.4rem;
+                border-radius: 20px;
+            }
+
+            .btn-card .title {
+                font-size: 0.85rem;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- 背景裝飾泡泡 -->
-  <div class="bg-bubbles">
-    <div class="bubble" style="width: 100px; height: 100px; top: 10%; left: 5%;"></div>
-    <div class="bubble" style="width: 60px; height: 60px; top: 60%; left: 10%; animation-delay: 2s;"></div>
-    <div class="bubble" style="width: 120px; height: 120px; top: 30%; right: 8%; animation-delay: 4s;"></div>
-    <div class="bubble" style="width: 80px; height: 80px; top: 75%; right: 15%; animation-delay: 1s;"></div>
-  </div>
+    <!-- 雲朵動畫背景 -->
+    <div class="cloud cloud-1"></div>
+    <div class="cloud cloud-2"></div>
 
-  <header>
-    <h1>🫧 朋友對我的動態留言板 🫧</h1>
-  </header>
-
-  <!-- 1. 載入中酷炫動畫 -->
-  <div id="loading-container">
-    <div class="loading-bubble">🫧</div>
-    <div class="loading-text">讀取留言中...</div>
-  </div>
-
-  <!-- 2. 瀑布流留言卡片牆 -->
-  <div id="wall" class="masonry-wall hidden"></div>
-
-  <script>
-    /* =========================================================
-       5. JavaScript 邏輯控制
-       ========================================================= */
-
-    // ⚙️ 參數設定區
-    const SPREADSHEET_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnPv7yFKzXFdZgvqJ5B832Qi5wRfndicd-JP8goPDkldeg2_8ARUWnU6_-voQlYhkEqsdUuHOPkXjg/pubhtml';
-    
-    // ⏱️ 輪播秒數控制 (單位：毫秒，3000ms = 3秒)
-    const ROTATION_INTERVAL = 3000;
-
-    let messageCards = [];     // 存放動態生成的卡片 DOM
-    let currentIndex = 0;       // 當前高亮的卡片索引
-    let timer = null;           // 計時器物件
-
-    // 🚀 初始化執行
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchAndParseCSV();
-    });
-
-    /**
-     * 從 Google 試算表抓取並解析 CSV 資料
-     */
-    async function fetchAndParseCSV() {
-      try {
-        // 將 pubhtml 網址自動轉換成 CSV 下載連結
-        const csvUrl = SPREADSHEET_URL.replace(/\/pubhtml.*/, '/pub?output=csv');
+    <!-- 主入口卡片 -->
+    <main class="container">
         
-        const response = await fetch(csvUrl);
-        if (!response.ok) throw new Error('無法讀取試算表資料');
-        
-        const csvText = await response.text();
-        const dataArray = parseCSV(csvText);
+        <!-- 個人頭像與資訊 -->
+        <header class="profile-section">
+            <div class="avatar-container">
+                <img src="https://i.postimg.cc/tTPvqvM3/IMG-6512.jpg" alt="大頭貼" class="avatar-img">
+                <span class="avatar-badge">⭐ LV.1</span>
+            </div>
+            <h1 class="user-name">常氏玲🐾</h1>
+            <span class="sub-title">網頁程式設計 // 冒險地圖 🗺️</span>
+        </header>
 
-        // 隱藏 Loading 動畫，顯示牆面
-        document.getElementById('loading-container').classList.add('hidden');
-        const wall = document.getElementById('wall');
-        wall.classList.remove('hidden');
+        <!-- 16 個關卡按鈕區域 -->
+        <nav class="grid-menu">
+            
+            <!-- 按鈕 1：已解鎖 -->
+            <a href="w1/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 1</span>
+                <span class="title">數位名片 🪪</span>
+            </a>
 
-        // 生成卡片
-        renderCards(dataArray);
+            <!-- 按鈕 2：已解鎖 -->
+            <a href="w2/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 2</span>
+                <span class="title">今天吃甚麼? 🍱</span>
+            </a>
 
-        // 如果有卡片，啟動 3 秒輪播特效
-        if (messageCards.length > 0) {
-          wall.classList.add('has-highlight'); // 啟用非高亮卡片的模糊樣式
-          startCarousel();
-        }
+            <!-- 按鈕 3：已解鎖 -->
+            <a href="w3/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 3</span>
+                <span class="title">迷因產生器 🤡</span>
+            </a>
 
-      } catch (error) {
-        console.error('讀取失敗:', error);
-        document.getElementById('loading-container').innerHTML = `
-          <div style="color: #ff4757; font-weight: bold;">
-            ❌ 留言讀取失敗，請確認試算表已公開發布。
-          </div>`;
-      }
-    }
+            <!-- 按鈕 4：已解鎖 -->
+            <a href="w4/index.html" class="btn-card unlocked">
+                <span class="week-tag">Week 4</span>
+                <span class="title">悄悄話 💬</span>
+            </a>
 
-    /**
-     * 專門處理 CSV 的解析器 (正確處理留言中的雙引號與逗號)
-     */
-    function parseCSV(text) {
-      const lines = [];
-      let row = [];
-      let currentToken = '';
-      let insideQuotes = false;
+            <!-- 按鈕 5 ~ 16：未解鎖 -->
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 5 - 未解鎖</span>
+            </div>
 
-      for (let i = 0; i < text.length; i++) {
-        const char = text[i];
-        const nextChar = text[i + 1];
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 6 - 未解鎖</span>
+            </div>
 
-        if (char === '"') {
-          if (insideQuotes && nextChar === '"') {
-            currentToken += '"';
-            i++; // 跳過下一個引號
-          } else {
-            insideQuotes = !insideQuotes;
-          }
-        } else if (char === ',' && !insideQuotes) {
-          row.push(currentToken.trim());
-          currentToken = '';
-        } else if ((char === '\r' || char === '\n') && !insideQuotes) {
-          if (char === '\r' && nextChar === '\n') i++;
-          row.push(currentToken.trim());
-          if (row.some(field => field.length > 0)) {
-            lines.push(row);
-          }
-          row = [];
-          currentToken = '';
-        } else {
-          currentToken += char;
-        }
-      }
-      if (currentToken || row.length > 0) {
-        row.push(currentToken.trim());
-        lines.push(row);
-      }
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 7 - 未解鎖</span>
+            </div>
 
-      // 剔除標題列 (第一列為 時間戳記, 名字, 悄悄話)
-      return lines.slice(1);
-    }
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 8 - 未解鎖</span>
+            </div>
 
-    /**
-     * 動態生成卡片並掛載到瀑布流牆面
-     */
-    function renderCards(data) {
-      const wall = document.getElementById('wall');
-      wall.innerHTML = '';
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 9 - 未解鎖</span>
+            </div>
 
-      data.forEach((row) => {
-        // 欄位順序預設：0:時間戳記, 1:名字, 2:悄悄話
-        const timestamp = row[0] || '';
-        const name = row[1] || '匿名朋友';
-        const message = row[2] || '';
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 10 - 未解鎖</span>
+            </div>
 
-        // 若無內容則跳過
-        if (!message && !name) return;
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 11 - 未解鎖</span>
+            </div>
 
-        // 建立卡片 DOM 結構
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.innerHTML = `
-          <div class="card-header">
-            <span class="card-name">🎈 ${escapeHTML(name)}</span>
-            <span class="card-time">${formatTime(timestamp)}</span>
-          </div>
-          <div class="card-content">${escapeHTML(message)}</div>
-        `;
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 12 - 未解鎖</span>
+            </div>
 
-        wall.appendChild(card);
-        messageCards.push(card);
-      });
-    }
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 13 - 未解鎖</span>
+            </div>
 
-    /**
-     * ✨ 隨時間輪播特效邏輯
-     */
-    function startCarousel() {
-      // 立即觸發第一張卡片
-      highlightCard(currentIndex);
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 14 - 未解鎖</span>
+            </div>
 
-      // 設定計時器，每 3 秒 (ROTATION_INTERVAL) 切換下一張
-      timer = setInterval(() => {
-        currentIndex = (currentIndex + 1) % messageCards.length;
-        highlightCard(currentIndex);
-      }, ROTATION_INTERVAL);
-    }
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 15 - 未解鎖</span>
+            </div>
 
-    /**
-     * 高亮顯示指定索引的卡片
-     */
-    function highlightCard(index) {
-      messageCards.forEach((card, i) => {
-        if (i === index) {
-          card.classList.add('highlight');
-          
-          // 自動將當前高亮卡片平滑滾動到視窗中間 (增強展覽觀賞體驗)
-          card.scrollIntoView({
-            behavior: 'smooth',
-            block: 'nearest'
-          });
-        } else {
-          card.classList.remove('highlight');
-        }
-      });
-    }
+            <div class="btn-card locked">
+                <span class="lock-emoji">🔒</span>
+                <span class="title">Week 16 - 未解鎖</span>
+            </div>
 
-    // 轉義 HTML 避免 XSS 安全問題
-    function escapeHTML(str) {
-      return str
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
+        </nav>
+    </main>
 
-    // 簡單格式化時間戳記 (僅保留日期與時間)
-    function formatTime(timeStr) {
-      if (!timeStr) return '';
-      return timeStr.split(' ')[0] || timeStr;
-    }
-  </script>
 </body>
 </html>
