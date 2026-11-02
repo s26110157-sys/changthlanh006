@@ -1,0 +1,517 @@
+extend: {
+                    colors: {
+                        brandYellow: '#FFD166',
+                        brandOrange: '#FF9F1C',
+                        brandRed: '#E71D36',
+                        brandDark: '#3A2E2B',
+                        brandCream: '#FFFDF9',
+                        brandAccent: '#FFE49E'
+                    fontFamily: {                }
+            }
+        }
+    </script>
+    
+    <style>
+        body {
+            background-color: #FFF8E7;
+            background-image: radial-gradient(#FFD166 1.5px, transparent 1.5px), radial-gradient(#FF9F1C 1.5px, #FFF8E7 1.5px);
+            background-size: 60px 60px;
+            background-position: 0 0, 30px 30px;
+        }
+
+        /* 彈跳與生動動畫 */
+        @keyframes elasticBounce {
+            0% { transform: scale(0.3); opacity: 0; }
+            50% { transform: scale(1.15); opacity: 1; }<
+                    },!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>今天吃什麼？ - 隨機美食抽籤機</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                        sans: ['"Noto Sans TC"', '"Fredoka"', 'sans-serif'],
+                        fun: ['"Fredoka"', '"Noto Sans TC"', 'sans-serif']
+                    }
+            70% { transform: scale(0.95); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 10px 25px -5px rgba(255, 159, 28, 0.4), 0 8px 10px -6px rgba(255, 159, 28, 0.2); }
+            50% { box-shadow: 0 20px 35px -5px rgba(255, 159, 28, 0.7), 0 12px 15px -6px rgba(255, 159, 28, 0.4); }
+        }
+
+        .animate-bounce-in {
+            animation: elasticBounce 0.75s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .animate-floating {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .btn-glow {
+            animation: pulseGlow 2.5s infinite;
+        }
+
+        /* 擬真可親風格陰影與圓角 */
+        .card-pop {
+            box-shadow: 0 12px 32px rgba(231, 111, 81, 0.15), 0 4px 12px rgba(0, 0, 0, 0.05);
+            border: 4px solid #FFF;
+        }
+
+        .btn-pushable {
+            position: relative;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            outline-offset: 4px;
+            transition: filter 250ms;
+        }
+
+        .btn-shadow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            background: rgba(0, 0, 0, 0.15);
+            will-change: transform;
+            transform: translateY(6px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+        }
+
+        .btn-edge {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 9999px;
+            background: linear-gradient(
+                to left,
+                #D97706 0%,
+                #F59E0B 8%,
+                #F59E0B 92%,
+                #B45309 100%
+            );
+        }
+
+        .btn-front {
+            display: block;
+            position: relative;
+            padding: 16px 42px;
+            border-radius: 9999px;
+            font-size: 1.5rem;
+            color: white;
+            background: linear-gradient(135deg, #FF9F1C 0%, #FFBF69 100%);
+            will-change: transform;
+            transform: translateY(-6px);
+            transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+        }
+
+        .btn-pushable:hover .btn-front {
+            transform: translateY(-8px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 15);
+        }
+
+        .btn-pushable:hover .btn-shadow {
+            transform: translateY(8px);
+            transition: transform 250ms cubic-bezier(.3, .7, .4, 15);
+        }
+
+        .btn-pushable:active .btn-front {
+            transform: translateY(-2px);
+            transition: transform 34ms;
+        }
+
+        .btn-pushable:active .btn-shadow {
+            transform: translateY(2px);
+            transition: transform 34ms;
+        }
+
+        /* 滾動條美化 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #FFF3D6;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFB703;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-brandDark flex flex-col justify-between font-sans relative overflow-x-hidden">
+
+    <div class="fixed top-12 left-10 text-brandYellow opacity-60 text-5xl animate-floating pointer-events-none hidden md:block" style="animation-delay: 0s;">
+        <i class="fa-solid font-black fa-utensils"></i>
+    </div>
+    <div class="fixed top-1/3 right-12 text-brandOrange opacity-50 text-6xl animate-floating pointer-events-none hidden md:block" style="animation-delay: 1s;">
+        <i class="fa-solid fa-burger"></i>
+    </div>
+    <div class="fixed bottom-20 left-16 text-brandYellow opacity-50 text-6xl animate-floating pointer-events-none hidden md:block" style="animation-delay: 2s;">
+        <i class="fa-solid fa-pizza-slice"></i>
+    </div>
+    <div class="fixed bottom-32 right-16 text-brandOrange opacity-60 text-5xl animate-floating pointer-events-none hidden md:block" style="animation-delay: 1.5s;">
+        <i class="fa-solid fa-bowl-food"></i>
+    </div>
+
+    <header class="w-full py-4 px-6 flex justify-between items-center max-w-4xl mx-auto z-10">
+        <div class="flex items-center gap-2 font-fun text-xl font-bold text-brandOrange">
+            <span class="bg-brandOrange text-white w-9 h-9 rounded-full flex items-center justify-center text-lg shadow-sm">
+                <i class="fa-solid fa-dice"></i>
+            </span>
+            <span>FoodPicker</span>
+        </div>
+        <button id="openMenuBtn" class="flex items-center gap-2 bg-white hover:bg-brandCream text-brandDark font-bold px-4 py-2 rounded-full shadow-md border-2 border-brandYellow transition duration-200 hover:scale-105 active:scale-95 text-sm">
+            <i class="fa-solid fa-sliders text-brandOrange"></i>
+            <span>自訂菜單 (<span id="menuCount">5</span>)</span>
+        </button>
+    </header>
+
+    <main class="flex-1 flex flex-col items-center justify-center px-4 py-6 z-10 w-full max-w-2xl mx-auto">
+        
+        <!-- 主要卡片容器 -->
+        <div class="w-full bg-white rounded-3xl p-6 md:p-10 card-pop text-center relative flex flex-col items-center transition-all duration-300">
+            
+            <!-- 可愛裝飾標籤 -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-orange-100 text-brandOrange font-bold text-xs md:text-sm mb-4">
+                <i class="fa-solid fa-wand-magic-sparkles"></i> 解決選擇困難症的最佳利器
+            </div>
+
+            <!-- 動態大標題 / 抽籤結果顯示區 -->
+            <div id="titleContainer" class="w-full min-h-[140px] flex flex-col items-center justify-center py-2">
+                <h1 id="mainTitle" class="text-3xl md:text-5xl font-black tracking-wide text-brandDark transition-all duration-200">
+                    今天吃什麼？
+                </h1>
+                <p id="subTitle" class="text-gray-400 mt-3 text-sm md:text-base font-normal">
+                    點擊下方按鈕，交給命運來幫你決定吧！
+                </p>
+            </div>
+
+            <!-- 照片展示區 (預設隱藏，抽籤後顯示) -->
+            <div id="resultCard" class="hidden w-full mt-2 mb-6 flex flex-col items-center animate-bounce-in">
+                <div class="relative w-full max-w-md h-52 md:h-64 rounded-2xl overflow-hidden shadow-lg border-4 border-brandAccent group">
+                    <img id="foodImage" src="" alt="美食圖片" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&auto=format&fit=crop'">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent flex items-end p-4">
+                        <span id="foodCategoryBadge" class="bg-brandOrange text-white text-xs font-bold px-3 py-1 rounded-full shadow">
+                            熱門推薦
+                        </span>
+                    </div>
+                </div>
+
+                <!-- 馬上出發 Google Maps 按鈕 -->
+                <a id="mapLink" href="#" target="_blank" class="mt-6 inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-lg px-8 py-3.5 rounded-full shadow-lg transition duration-200 hover:scale-105 active:scale-95">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>馬上出發 (搜尋 Google 地圖)</span>
+                </a>
+            </div>
+
+            <div class="mt-6 mb-2">
+                <button id="drawBtn" class="btn-pushable btn-glow">
+                    <span class="btn-shadow"></span>
+                    <span class="btn-edge"></span>
+                    <span class="btn-front flex items-center gap-3 font-black tracking-wider">
+                        <i class="fa-solid fa-dice-five text-2xl"></i>
+                        <span id="btnText">點我抽籤</span>
+                    </span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="menuModal" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden opacity-0 transition-opacity duration-300">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border-4 border-brandYellow transform scale-95 transition-transform duration-300" id="modalContent">
+            
+            <div class="flex justify-between items-center mb-4 pb-2 border-b-2 border-gray-100">
+                <h3 class="text-xl font-bold text-brandDark flex items-center gap-2">
+                    <i class="fa-solid fa-utensils text-brandOrange"></i>
+                    管理候選美食清單
+                </h3>
+                <button id="closeMenuBtn" class="text-gray-400 hover:text-brandDark w-8 h-8 rounded-full hover:bg-gray-100 flex items-center justify-center transition">
+                    <i class="fa-solid fa-xmark text-xl"></i>
+                </button>
+            </div>
+
+            <!-- 新增項目輸入框 -->
+            <form id="addFoodForm" class="flex gap-2 mb-4">
+                <input type="text" id="foodInput" placeholder="輸入想吃的食物 (例: 滷肉飯)" required class="flex-1 px-4 py-2.5 rounded-xl border-2 border-gray-200 focus:border-brandOrange focus:outline-none text-sm font-medium">
+                <button type="submit" class="bg-brandOrange hover:bg-amber-600 text-white font-bold px-4 py-2.5 rounded-xl shadow transition duration-200 text-sm whitespace-nowrap">
+                    <i class="fa-solid fa-plus"></i> 新增
+                </button>
+            </form>
+
+            <!-- 項目列表 -->
+            <div class="max-h-60 overflow-y-auto pr-1 space-y-2 mb-6" id="foodList">
+                <!-- 由 JavaScript 動態生成 -->
+            </div>
+
+            <!-- 重置與確認 -->
+            <div class="flex justify-between items-center pt-2 border-t border-gray-100">
+                <button id="resetMenuBtn" class="text-xs text-gray-400 hover:text-brandRed underline flex items-center gap-1">
+                    <i class="fa-solid fa-rotate-left"></i> 恢復預設菜單
+                </button>
+                <button id="saveMenuBtn" class="bg-brandYellow hover:bg-amber-400 text-brandDark font-bold px-6 py-2 rounded-xl text-sm transition shadow">
+                    完成
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="w-full py-4 text-center text-xs text-brandDark/50 font-medium">
+        <p>設計新手專用 ✨ 讓每一餐都充滿驚喜！</p>
+    </footer>
+
+    <script>
+        // 預設食物資料庫（更新包含：越南美食）
+        const defaultFoods = [
+            {
+                name: "韓國辣麵",
+                image: "https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=800&auto=format&fit=crop",
+                tag: "韓式料理"
+            },
+            {
+                name: "漢堡王",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop",
+                tag: "美式速食"
+            },
+            {
+                name: "九勺涮涮鍋",
+                image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&auto=format&fit=crop",
+                tag: "精緻火鍋"
+            },
+            {
+                name: "越南美食",
+                image: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=800&auto=format&fit=crop",
+                tag: "東南亞風味"
+            },
+            {
+                name: "法國麵包",
+                image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?w=800&auto=format&fit=crop",
+                tag: "烘焙輕食"
+            }
+        ];
+
+        // 預備隨機照片庫（供使用者新增自訂項目時自動指派）
+        const randomFoodImages = [
+            "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&auto=format&fit=crop",
+            "https://images.unsplash.com/photo-1529042410759-befb1204b468?w=800&auto=format&fit=crop"
+        ];
+
+        // 應用程式狀態 variables
+        let foods = JSON.parse(localStorage.getItem('myFoodList')) || [...defaultFoods];
+        let isSpinning = false;
+
+        // DOM 元素選取
+        const mainTitle = document.getElementById('mainTitle');
+        const subTitle = document.getElementById('subTitle');
+        const drawBtn = document.getElementById('drawBtn');
+        const btnText = document.getElementById('btnText');
+        const resultCard = document.getElementById('resultCard');
+        const foodImage = document.getElementById('foodImage');
+        const foodCategoryBadge = document.getElementById('foodCategoryBadge');
+        const mapLink = document.getElementById('mapLink');
+        const menuCount = document.getElementById('menuCount');
+
+        // Modal 元素選取
+        const openMenuBtn = document.getElementById('openMenuBtn');
+        const closeMenuBtn = document.getElementById('closeMenuBtn');
+        const saveMenuBtn = document.getElementById('saveMenuBtn');
+        const menuModal = document.getElementById('menuModal');
+        const modalContent = document.getElementById('modalContent');
+        const foodList = document.getElementById('foodList');
+        const addFoodForm = document.getElementById('addFoodForm');
+        const foodInput = document.getElementById('foodInput');
+        const resetMenuBtn = document.getElementById('resetMenuBtn');
+
+        // 更新選單數量顯示
+        function updateCount() {
+            menuCount.textContent = foods.length;
+        }
+
+        // 儲存資料至 LocalStorage
+        function saveFoodsToStorage() {
+            localStorage.setItem('myFoodList', JSON.stringify(foods));
+            updateCount();
+        }
+
+        function startDraw() {
+            if (isSpinning) return;
+            if (foods.length === 0) {
+                alert("請先在菜單中新增至少一個食物選項喔！");
+                openModal();
+                return;
+            }
+
+            isSpinning = true;
+            drawBtn.disabled = true;
+            btnText.textContent = "轉盤中...";
+            
+            // 隱藏先前的結果與副標題
+            resultCard.classList.add('hidden');
+            subTitle.classList.add('hidden');
+            
+            // 轉盤動畫：快速切換文字
+            let counter = 0;
+            const totalTicks = 25; // 切換總次數
+            const speed = 70; // 切換間隔毫秒
+
+            const interval = setInterval(() => {
+                const randomTemp = foods[Math.floor(Math.random() * foods.length)];
+                mainTitle.textContent = randomTemp.name;
+                mainTitle.className = "text-3xl md:text-5xl font-black text-brandOrange tracking-wide scale-105 transition-transform duration-75";
+
+                counter++;
+                if (counter >= totalTicks) {
+                    clearInterval(interval);
+                    finalizeResult();
+                }
+            }, speed);
+        }
+
+        function finalizeResult() {
+            // 隨機選出最終答案
+            const selected = foods[Math.floor(Math.random() * foods.length)];
+            
+            // 更新大標題並套用生動彈跳動畫
+            mainTitle.textContent = selected.name;
+            mainTitle.className = "text-4xl md:text-6xl font-black text-brandRed tracking-wider animate-bounce-in";
+            
+            // 更新照片與標籤
+            foodImage.src = selected.image || randomFoodImages[0];
+            foodCategoryBadge.textContent = selected.tag || "美味首選";
+
+            // 設定 Google Maps 搜尋連結
+            const mapsQuery = encodeURIComponent(selected.name);
+            mapLink.href = `https://www.google.com/maps/search/?api=1&query=${mapsQuery}`;
+
+            // 顯示結果卡片
+            resultCard.classList.remove('hidden');
+
+            // 放彩帶特效 (Confetti)
+            triggerConfetti();
+
+            // 恢復按鈕狀態
+            isSpinning = false;
+            drawBtn.disabled = false;
+            btnText.textContent = "再抽一次！";
+        }
+
+        // 五彩繽紛彩帶慶祝效果
+        function triggerConfetti() {
+            confetti({
+                particleCount: 80,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#FFD166', '#FF9F1C', '#E71D36', '#06D6A0', '#118AB2']
+            });
+        }
+
+        function renderFoodList() {
+            foodList.innerHTML = '';
+            if (foods.length === 0) {
+                foodList.innerHTML = `<p class="text-center text-gray-400 py-4 text-sm">目前的清單是空的，快新增一些美食吧！</p>`;
+                return;
+            }
+
+            foods.forEach((item, index) => {
+                const div = document.createElement('div');
+                div.className = "flex justify-between items-center bg-amber-50 px-4 py-2.5 rounded-xl border border-amber-100";
+                div.innerHTML = `
+                    <span class="font-bold text-brandDark text-sm">${item.name}</span>
+                    <button onclick="deleteFood(${index})" class="text-gray-400 hover:text-brandRed p-1 transition">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                foodList.appendChild(div);
+            });
+        }
+
+        function deleteFood(index) {
+            foods.splice(index, 1);
+            saveFoodsToStorage();
+            renderFoodList();
+        }
+
+        function openModal() {
+            renderFoodList();
+            menuModal.classList.remove('hidden');
+            setTimeout(() => {
+                menuModal.classList.remove('opacity-0');
+                modalContent.classList.remove('scale-95');
+                modalContent.classList.add('scale-100');
+            }, 10);
+        }
+
+        function closeModal() {
+            menuModal.classList.add('opacity-0');
+            modalContent.classList.remove('scale-100');
+            modalContent.classList.add('scale-95');
+            setTimeout(() => {
+                menuModal.classList.add('hidden');
+            }, 300);
+        }
+
+        // 新增食物項目
+        addFoodForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const name = foodInput.value.trim();
+            if (name) {
+                const randomImg = randomFoodImages[Math.floor(Math.random() * randomFoodImages.length)];
+                foods.push({
+                    name: name,
+                    image: randomImg,
+                    tag: "自訂美食"
+                });
+                saveFoodsToStorage();
+                renderFoodList();
+                foodInput.value = '';
+            }
+        });
+
+        // 恢復預設值
+        resetMenuBtn.addEventListener('click', () => {
+            if (confirm("確定要恢復預設的美味菜單嗎？")) {
+                foods = [...defaultFoods];
+                saveFoodsToStorage();
+                renderFoodList();
+            }
+        });
+
+        // 事件監聽器設定
+        drawBtn.addEventListener('click', startDraw);
+        openMenuBtn.addEventListener('click', openModal);
+        closeMenuBtn.addEventListener('click', closeModal);
+        saveMenuBtn.addEventListener('click', closeModal);
+
+        // 點擊 Modal 外圍區域關閉
+        menuModal.addEventListener('click', (e) => {
+            if (e.target === menuModal) closeModal();
+        });
+
+        // 初始化
+        updateCount();
+    </script>
+</body>
+</html>
